@@ -5,6 +5,11 @@ WORKDIR /app
 COPY requirements.txt .
 COPY vwap_calculator.py .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv and set up virtual environment
+RUN pip install uv && \
+    uv venv && \
+    . .venv/bin/activate && \
+    uv pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "vwap_calculator.py"]
+# Use the virtual environment's Python
+CMD [".venv/bin/python", "vwap_calculator.py"]
